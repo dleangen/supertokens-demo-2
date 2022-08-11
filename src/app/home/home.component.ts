@@ -1,14 +1,20 @@
 import { AfterViewInit, Component } from "@angular/core";
 
 import * as Session from "supertokens-web-js/recipe/session";
+import {CommonModule} from "@angular/common";
+import {RouterModule} from "@angular/router";
 
 @Component({
     selector: "app-home",
     templateUrl: "./home.component.html",
     styleUrls: ["./home.component.css"],
+    standalone: true,
+    imports: [
+      CommonModule,
+      RouterModule,
+    ],
 })
 export class HomeComponent implements AfterViewInit {
-    title = "angularreactapp";
 
     public rootId = "rootId";
     public userId = "";

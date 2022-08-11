@@ -4,13 +4,19 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import SuperTokensReactComponent from "./supertokens";
+import {CommonModule} from "@angular/common";
+import {RouterModule} from "@angular/router";
 
 @Component({
     selector: "app-auth",
     template: '<div [id]="rootId"></div>',
+    standalone: true,
+    imports: [
+      CommonModule,
+      RouterModule,
+    ],
 })
 export class AuthComponent implements OnDestroy, AfterViewInit {
-    title = "angularreactapp";
 
     public rootId = "rootId";
 
