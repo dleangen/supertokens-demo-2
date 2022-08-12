@@ -1,11 +1,9 @@
 import { Component, OnDestroy, AfterViewInit } from "@angular/core";
 import * as React from "react";
-
-import * as ReactDOM from "react-dom";
-
 import SuperTokensReactComponent from "./supertokens";
 import {CommonModule} from "@angular/common";
 import {RouterModule} from "@angular/router";
+import {createRoot, Root} from "react-dom/client";
 
 @Component({
     selector: "app-auth",
@@ -19,14 +17,15 @@ import {RouterModule} from "@angular/router";
 export class AuthComponent implements OnDestroy, AfterViewInit {
 
     public rootId = "rootId";
+    root!: Root;
 
-    // We use the ngAfterViewInit lifecycle hook to render the React component after the Angular component  view gets initialized
     ngAfterViewInit() {
-        ReactDOM.render(React.createElement(SuperTokensReactComponent), document.getElementById(this.rootId));
+      const container = document.getElementById(this.rootId);
+      this.root = createRoot(container!);
+      this.root.render(React.createElement(SuperTokensReactComponent));
     }
 
-    // We use the ngOnDestroy lifecycle hook to unmount the React component when the Angular wrapper component is destroyed.
     ngOnDestroy() {
-        ReactDOM.unmountComponentAtNode(document.getElementById(this.rootId) as Element);
+        this.root.unmount();
     }
 }
