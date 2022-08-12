@@ -1,14 +1,17 @@
 <div class="body">
     <h1>Hello</h1>
 
-    <div *ngIf="doesSessionExist$ | async; else noSession">
+    <div *ngIf="(doesSessionExist$ | async); else noSession">
         <span>UserId:</span>
         <h3>{{ userId$ | async }}</h3>
 
         <button (click)="onSignOut()">Sign Out</button>
     </div>
+
     <p>Visit the <a href="https://supertokens.com">SuperTokens tutorial</a> to learn how to build Auth under a day.</p>
+
     <ng-template #noSession>
+      <p>hello</p>
         <button [routerLink]="['/auth']">Sign in</button>
     </ng-template>
 </div>

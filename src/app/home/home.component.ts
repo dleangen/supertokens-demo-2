@@ -1,4 +1,4 @@
-import {AfterViewInit, Component} from "@angular/core";
+import {Component} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {Router, RouterModule} from "@angular/router";
 import {SupertokensAuthService} from "../services/supertokens-auth.service";
@@ -14,7 +14,7 @@ import {Observable} from "rxjs";
       RouterModule,
     ],
 })
-export class HomeComponent implements AfterViewInit {
+export class HomeComponent {
 
     public rootId = "rootId";
     public userId = "";
@@ -27,10 +27,6 @@ export class HomeComponent implements AfterViewInit {
     private router: Router) {
     this.doesSessionExist$ = auth.hasSession$;
     this.userId$ = auth.userId$;
-  }
-
-  async ngAfterViewInit() {
-    this.auth.checkForSession();
   }
 
   onSignOut(): void {

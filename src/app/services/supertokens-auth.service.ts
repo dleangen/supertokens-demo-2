@@ -17,8 +17,10 @@ export class SupertokensAuthService {
   constructor() { }
 
   async checkForSession(): Promise<boolean> {
+    console.log('Checking for session...');
     const doesSessionExist = await Session.doesSessionExist();
     this.hasSessionSubject.next(doesSessionExist);
+    console.log('Session exists', doesSessionExist);
     return doesSessionExist;
   }
 

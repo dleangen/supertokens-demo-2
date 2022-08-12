@@ -20,6 +20,23 @@ SuperTokens.init({
             emailVerificationFeature: {
                 mode: "REQUIRED",
             },
+            onHandleEvent: async (context) => {
+              if (context.action === "SESSION_ALREADY_EXISTS") {
+                // TODO:
+                console.log('Session Already Exists!');
+              } else if (context.action === "SUCCESS") {
+                let { id, email } = context.user;
+                if (context.isNewUser) {
+                  // TODO: Sign up
+                  console.log('New User');
+                } else {
+                  // TODO: Sign in
+                  console.log('Welcome back!');
+                }
+              } else {
+                console.error('WTF???');
+              }
+            }
         }),
         Session.init(),
     ],
