@@ -1,8 +1,8 @@
-import { AfterViewInit, Component } from "@angular/core";
-
-import * as Session from "supertokens-web-js/recipe/session";
+import {AfterViewInit, Component} from "@angular/core";
 import {CommonModule} from "@angular/common";
-import {RouterModule} from "@angular/router";
+import {Router, RouterModule} from "@angular/router";
+import {SupertokensAuthService} from "../services/supertokens-auth.service";
+import {Observable} from "rxjs";
 
 @Component({
     selector: "app-home",
@@ -18,25 +18,22 @@ export class HomeComponent implements AfterViewInit {
 
     public rootId = "rootId";
     public userId = "";
-    public session = false;
+    userId$: Observable<string | null>;
+    doesSessionExist$: Observable<boolean>;
 
-    ngAfterViewInit() {
-        this.getUserInfo();
-    }
 
-    async getUserInfo() {
-        this.session = await Session.doesSessionExist();
-        if (this.session) {
-            this.userId = await Session.getUserId();
-        }
-    }
+  constructor(
+    private auth: SupertokensAuthService,
+    private router: Router) {
+    this.doesSessionExist$ = auth.hasSession$;
+    this.userId$ = auth.userId$;
+  }
 
-    async onLogout() {
-        await Session.signOut();
-        window.location.reload();
-    }
+  async ngAfterViewInit() {
+    this.auth.checkForSession();
+  }
 
-    redirectToLogin() {
-        window.location.href = "auth";
-    }
+  onSignOut(): void {
+      this.auth.signOut();
+  }
 }
