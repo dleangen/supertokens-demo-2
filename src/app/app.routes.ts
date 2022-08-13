@@ -2,6 +2,7 @@ import {Routes} from "@angular/router";
 import {AuthComponent} from "./auth/auth.component";
 import {HomeComponent} from "./home/home.component";
 import {IsAuthenticatedGuard} from "./guards/is-authenticated.guard";
+import {ItemsComponent} from "./components/items/items.component";
 
 export const APP_ROUTES: Routes  = [
   {
@@ -13,6 +14,12 @@ export const APP_ROUTES: Routes  = [
         component: AuthComponent,
       },
     ],
+  },
+  {
+    path: 'items',
+    title: 'SuperTokens Demo – Items',
+    component: ItemsComponent,
+    canActivate: [IsAuthenticatedGuard],
   },
   {
     path: '**',
