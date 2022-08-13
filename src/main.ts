@@ -6,6 +6,10 @@ import {RouterModule} from "@angular/router";
 import {APP_ROUTES} from "./app/app.routes";
 import * as SuperTokens from "supertokens-web-js";
 import * as Session from "supertokens-web-js/recipe/session";
+import {FIREBASE_OPTIONS} from "@angular/fire/compat";
+import {initializeApp, provideFirebaseApp} from "@angular/fire/app";
+import {getFunctions, provideFunctions} from "@angular/fire/functions";
+import {getFirestore, provideFirestore} from "@angular/fire/firestore";
 
 if (environment.production) {
     enableProdMode();
@@ -23,5 +27,14 @@ bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(RouterModule.forRoot(APP_ROUTES)),
     { provide: APP_INITIALIZER, useFactory: initSuperTokens},
+    { provide: FIREBASE_OPTIONS, useValue: environment.firebase },
+    // { provide: USE_FIRESTORE_EMULATOR, useValue: environment.useEmulators ? ['localhost', 8080] : undefined },
+    // { provide: USE_FUNCTIONS_EMULATOR, useValue: environment.useEmulators ? ['http://localhost:5001'] : undefined },
+    importProvidersFrom(
+      provideFirebaseApp(() => initializeApp(environment.firebase)),
+      provideFunctions(() => getFunctions()),
+      // provideAuth(() => getAuth()),
+      provideFirestore(() => getFirestore()),
+    ),
   ],
 })
