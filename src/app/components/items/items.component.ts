@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {RouterModule} from "@angular/router";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
-import {Observable} from "rxjs";
+import {map, Observable} from "rxjs";
 
 @Component({
   selector: 'app-items',
@@ -17,11 +17,17 @@ import {Observable} from "rxjs";
 export class ItemsComponent implements OnInit {
 
   items$!: Observable<any>;
+  hasItems$!: Observable<boolean>
 
   constructor(private db: AngularFirestore) { }
 
   ngOnInit(): void {
     this.items$ = this.db.collection('items')
       .valueChanges({idField: 'id'});
+
+    this.hasItems$ = this.items$
+      .pipe(
+        map(items => !!items && items.length > 0),
+      );
   }
 }
