@@ -17,10 +17,15 @@ if (environment.production) {
     enableProdMode();
 }
 
+const apiPort = 5001;
+const apiDomain = `http://localhost:${apiPort}`;
+
 const initSuperTokens = () => SuperTokens.init({
   appInfo: {
     appName: "SuperTokens Demo",
-    apiDomain: "http://localhost:3001",
+    apiDomain,
+    apiBasePath: '/auth',
+    apiGatewayPath: '/supertokens-demo-20220805/us-central1',
   },
   recipeList: [Session.init()],
 });
@@ -31,7 +36,7 @@ bootstrapApplication(AppComponent, {
     { provide: APP_INITIALIZER, useFactory: initSuperTokens},
     { provide: FIREBASE_OPTIONS, useValue: environment.firebase },
     { provide: USE_FIRESTORE_EMULATOR, useValue: environment.useEmulators ? ['localhost', 8080] : undefined },
-    { provide: USE_FUNCTIONS_EMULATOR, useValue: environment.useEmulators ? ['http://localhost:5001'] : undefined },
+    { provide: USE_FUNCTIONS_EMULATOR, useValue: environment.useEmulators ? [apiDomain] : undefined },
     importProvidersFrom(
       provideFirebaseApp(() => initializeApp(environment.firebase)),
       provideFunctions(() => getFunctions()),

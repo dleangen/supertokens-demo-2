@@ -1,9 +1,12 @@
 import * as functions from "firebase-functions";
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+export const auth =
+  functions.https.onRequest(async (request, response) => {
+    try {
+      const handlerModule = await import('./auth-endpoints');
+      const handler = handlerModule.default;
+      await handler(request, response);
+    } catch (error) {
+      functions.logger.error(error);
+    }
+  });

@@ -6,11 +6,21 @@ import * as ThirdPartyEmailPassword from "supertokens-auth-react/recipe/thirdpar
 import { Github, Google } from "supertokens-auth-react/recipe/thirdpartyemailpassword";
 import Session from "supertokens-auth-react/recipe/session";
 
+const apiPort = 5001;
+const apiDomain = `http://localhost:${apiPort}`;
+const websitePort = 4200;
+const websiteDomain = `http://localhost:${websitePort}`;
+
 SuperTokens.init({
     appInfo: {
         appName: "SuperTokens Demo App", // TODO: Your app name
-        apiDomain: "http://localhost:3001", // TODO: Change to your app's API domain
-        websiteDomain: "http://localhost:4200", // TODO: Change to your app's website domain
+        apiDomain, // TODO: Change to your app's API domain
+        websiteDomain, // TODO: Change to your app's website domain
+        // Add these to function properly with Firebase Functions on the backend
+        // TODO: Change to match your own settings
+        apiBasePath: '/auth',
+        apiGatewayPath: '/supertokens-demo-20220805/us-central1',
+        websiteBasePath: '/auth'
     },
     recipeList: [
         ThirdPartyEmailPassword.init({

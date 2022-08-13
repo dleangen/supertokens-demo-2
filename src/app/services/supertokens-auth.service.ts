@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as Session from "supertokens-web-js/recipe/session";
-import {BehaviorSubject, mergeMap, of, tap} from "rxjs";
+import {BehaviorSubject, mergeMap, of} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
