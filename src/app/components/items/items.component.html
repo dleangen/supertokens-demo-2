@@ -1,9 +1,12 @@
 <div class="body">
   <h1>Firebase Demo</h1>
   <h3>Items</h3>
+  <p>The data below is sourced from Firebase.</p>
   <ul>
     <li *ngFor="let item of items$ | async">{{item.name}}</li>
   </ul>
+
+  <p><a [routerLink]="['/']">Top</a></p>
 
   <p>Visit the <a href="https://supertokens.com">SuperTokens tutorial</a> to learn how to build Auth under a day.</p>
 </div>
