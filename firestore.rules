@@ -1,9 +1,32 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if
-          request.time < timestamp.date(2022, 9, 4);
+
+    function isAuthenticated(auth) {
+      return auth != null;
+    }
+
+    function isAuthorized(email, confinement) {
+      return email in get(/databases/$(database)/documents/auth/$(confinement)).data.users;
+    }
+
+    function isAdmin(auth) {
+      return isAuthenticated(auth) && auth.token.admin == true;
+    }
+
+    function userConfined(auth, confinement) {
+      return exists(/databases/$(database)/documents/confinements/$(confinement))
+        && exists(/databases/$(database)/documents/user/$(auth.token.email))
+        && get(/databases/$(database)/documents/user/$(auth.token.email)).data.confinement == confinement;
+    }
+
+    match /confinements/{confinement}/{document=**} {
+      allow read: if isAuthenticated(request.auth) && userConfined(request.auth, confinement);
+      allow write: if isAdmin(request.auth) || isAuthorized(request.auth.token.email, confinement);
+    }
+
+    match /items/{document=**} {
+      allow read, write: if isAuthenticated(request.auth);
     }
   }
 }

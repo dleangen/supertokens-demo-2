@@ -10,6 +10,7 @@ import {FIREBASE_OPTIONS} from "@angular/fire/compat";
 import {initializeApp, provideFirebaseApp} from "@angular/fire/app";
 import {getFunctions, provideFunctions} from "@angular/fire/functions";
 import {getFirestore, provideFirestore} from "@angular/fire/firestore";
+import {getAuth, provideAuth} from "@angular/fire/auth";
 import {USE_EMULATOR as USE_FIRESTORE_EMULATOR} from "@angular/fire/compat/firestore";
 import {USE_EMULATOR as USE_FUNCTIONS_EMULATOR} from "@angular/fire/compat/functions";
 
@@ -40,7 +41,7 @@ bootstrapApplication(AppComponent, {
     importProvidersFrom(
       provideFirebaseApp(() => initializeApp(environment.firebase)),
       provideFunctions(() => getFunctions()),
-      // provideAuth(() => getAuth()),
+      provideAuth(() => getAuth()),
       provideFirestore(() => getFirestore()),
     ),
   ],

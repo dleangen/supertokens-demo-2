@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {RouterModule} from "@angular/router";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {map, Observable} from "rxjs";
+import {AngularFireAuth} from "@angular/fire/compat/auth";
 
 @Component({
   selector: 'app-items',
@@ -19,7 +20,9 @@ export class ItemsComponent implements OnInit {
   items$!: Observable<any>;
   hasItems$!: Observable<boolean>
 
-  constructor(private db: AngularFirestore) { }
+  constructor(
+    private db: AngularFirestore,
+    private auth: AngularFireAuth) { }
 
   ngOnInit(): void {
     this.items$ = this.db.collection('items')

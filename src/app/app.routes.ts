@@ -19,7 +19,6 @@ export const APP_ROUTES: Routes  = [
     path: 'items',
     title: 'SuperTokens Demo – Items',
     component: ItemsComponent,
-    canActivate: [IsAuthenticatedGuard],
   },
   {
     path: '**',

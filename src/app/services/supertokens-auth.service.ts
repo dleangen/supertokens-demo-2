@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as Session from "supertokens-web-js/recipe/session";
 import {BehaviorSubject, mergeMap, of} from "rxjs";
+import {FirebaseAuthService} from "./firebase-auth.service";
 
 @Injectable({
   providedIn: 'root'
@@ -14,18 +15,22 @@ export class SupertokensAuthService {
       mergeMap(hasSession => hasSession ? Session.getUserId() : of(null)),
     );
 
-  constructor() { }
+  constructor(private firebase: FirebaseAuthService) { }
 
   async checkForSession(): Promise<boolean> {
-    console.log('Checking for session...');
-    const doesSessionExist = await Session.doesSessionExist();
-    this.hasSessionSubject.next(doesSessionExist);
-    console.log('Session exists', doesSessionExist);
-    return doesSessionExist;
+    const doesSuperTokensSessionExist = await Session.doesSessionExist();
+    this.hasSessionSubject.next(doesSuperTokensSessionExist);
+    if (doesSuperTokensSessionExist) {
+      const token = (await Session.getAccessTokenPayloadSecurely()).firebaseToken;
+      // Don't need to await this: run in parallel
+      this.firebase.signInOrRefreshSession(token);
+    }
+    return doesSuperTokensSessionExist;
   }
 
   signOut(): Promise<void> {
     return Session.signOut()
+      .then(() => this.firebase.signOut())
       .then(() => this.hasSessionSubject.next(false));
   }
 }

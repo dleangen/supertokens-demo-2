@@ -31,6 +31,7 @@ SuperTokens.init({
                 mode: "REQUIRED",
             },
             onHandleEvent: async (context) => {
+              console.log('onHandleEvent', JSON.stringify(context));
               if (context.action === "SESSION_ALREADY_EXISTS") {
                 // TODO:
                 console.log('Session Already Exists!');

@@ -2,6 +2,7 @@
   <h1>Firebase Demo</h1>
   <h3>Items</h3>
   <p>The data below is sourced from Firebase.</p>
+  <p>This page is not guarded in order to see what happens even when the user is not authenticated.</p>
   <ul *ngIf="hasItems$ | async; else noItems">
     <li *ngFor="let item of items$ | async">{{item.name}}</li>
   </ul>
